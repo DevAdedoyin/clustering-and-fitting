@@ -11,13 +11,12 @@ import numpy as np
 
 from sklearn.cluster import KMeans
 from sklearn.preprocessing import scale
+import sklearn.metrics as skmet
+
 from scipy.optimize import curve_fit
 import cluster_tools as ct
-import sklearn.metrics as skmet
-import os
-
-
-os.environ["OMP_NUM_THREADS"] = '1'
+import scipy.optimize as opt
+import errors as err
 
 # Function to read the dataset
 def read_worldbank_dataset():
@@ -101,7 +100,6 @@ kmeans = KMeans(n_clusters=ncluster)
 kmeans.fit(normalized_dataframe) # fit done on x,y pairs
 labels = kmeans.labels_
 
-
 # cluster by cluster
 plt.figure(figsize=(7.0, 7.0))
 cm = plt.cm.get_cmap('tab10')
@@ -121,8 +119,7 @@ plt.ylabel("2010")
 
 plt.show()
 
-
-###################UNNORMALIZED DATA###########################
+################### UNNORMALIZED DATA ###########################
 ncluster = 7
 
 # set up the clusterer with the number of expected clusters
@@ -132,9 +129,7 @@ kmeans = KMeans(n_clusters=ncluster)
 kmeans.fit(fitted_dataframe) # fit done on x,y pairs
 labels = kmeans.labels_
 
-
-# cluster by cluster
-plt.figure(figsize=(7.0, 7.0))
+# cluster by clusterplt.figure(figsize=(7.0, 7.0))
 cm = plt.cm.get_cmap('tab10')
 plt.scatter(fitted_dataframe["1970"], fitted_dataframe["2010"], 
             10, labels, marker="o", cmap=cm)
@@ -152,8 +147,27 @@ plt.ylabel("2010")
 
 plt.show()
 
+############################################################################
 
+dataframe2 = worldbank_dataframe.T.reset_index()
+print(dataframe2)
 
+dataframe2.columns = dataframe2.iloc[0]
+dataframe2 = dataframe2.drop(0)
 
+dataframe2 = dataframe2[["Country Name", "United States"]]
 
+dataframe2 = dataframe2.drop(1)
 
+dataframe2 = dataframe2.rename(
+    columns={"Country Name": "Years", 
+             "United States": "Growth(%)"})
+
+# drop rows with NaN values
+dataframe2 = dataframe2.dropna().reset_index()
+
+dataframe2 = dataframe2.drop("index", axis=1)
+
+dataframe2.plot("Years", "Growth(%)")
+
+print(dataframe2)
