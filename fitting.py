@@ -78,13 +78,17 @@ gdp_data["fit"] = logistics(gdp_data["Years"].astype(int), *param)
 plt.figure()
 
 # Title of the plot and plot of the fitted data
-plt.title("Logistics function for GDP per capita")
+plt.title("Fitting for GDP per capita of USA")
 plt.plot(gdp_data["Years"], gdp_data["GDP per capita"], label="data")
 plt.plot(gdp_data["Years"], gdp_data["fit"], label="fit")
 
 years_list = ["1960", "1970", "1980", "1990", "2000", "2010", "2020"]
 
 plt.xticks(years_list)
+
+plt.xlabel("Years")
+plt.ylabel("GDP per capita")
+
 plt.legend()
 plt.show()
 
@@ -99,8 +103,6 @@ print(year_list_forecast)
 forecast_df = pd.DataFrame({"forecast": forecast, "Years": year.astype(str)})
 gdp_data = pd.merge(gdp_data, forecast_df, on="Years", how="outer")
 
-
-
 print(gdp_data)
 
 #gdp_data = gdp_data.fillna(0, inplace=True)
@@ -111,10 +113,12 @@ plt.plot(gdp_data["Years"], gdp_data["GDP per capita"],
 plt.plot(gdp_data["Years"], gdp_data["forecast"], 
          label="forecast")
 
+plt.title("Prediction plot for GDP per capita of USA")
+
 plt.xticks(year_list_forecast)
 
-plt.xlabel("year")
-plt.ylabel("GDP")
+plt.xlabel("Years")
+plt.ylabel("GDP per capita")
 plt.legend()
 plt.show()
 
@@ -122,7 +126,7 @@ lower, upper = err.err_ranges(gdp_data["Years"].astype(int),
                               logistics, param, sigmas)
 
 plt.figure()
-plt.title("logistics function")
+plt.title("Prediction & error range for GDP per capita of USA")
 
 plt.plot(gdp_data["Years"], gdp_data["GDP per capita"], label="GDP per capita")
 plt.plot(forecast, label="fit")
@@ -131,6 +135,9 @@ plt.plot(forecast, label="fit")
 plt.fill_between(gdp_data["Years"], lower, upper, alpha=0.7, color='green')
 
 plt.xticks(year_list_forecast)
+
+plt.xlabel("Year")
+plt.ylabel("GDP per capita")
 
 plt.legend(loc="upper left")
 plt.show()
