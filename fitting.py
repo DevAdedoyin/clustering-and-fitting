@@ -57,7 +57,10 @@ def read_gdp_dataset():
 
     return gdp_data
 
-# Call the read_gdp_dataset function
+"""
+ Call the read_gdp_dataset function and get the required dataframe for analysis
+ The store the returned dataframe in the gdp_data varable.
+"""
 gdp_data = read_gdp_dataset()
 
 # Compute the logistic function
@@ -97,55 +100,65 @@ plt.show()
 year = np.arange(1960, 2041)
 forecast = logistics(year, *param)
 
+# Add more years to the years list
 year_list_forecast = years_list + ["2030", "2040"]
 print(year_list_forecast)
 
-forecast_df = pd.DataFrame({"forecast": forecast, "Years": year.astype(str)})
+forecast_df = pd.DataFrame({"forecast":forecast, "Years":year.astype(str)})
 gdp_data = pd.merge(gdp_data, forecast_df, on="Years", how="outer")
 
 print(gdp_data)
 
-#gdp_data = gdp_data.fillna(0, inplace=True)
-
+# plot figure for the plot
 plt.figure()
+
 plt.plot(gdp_data["Years"], gdp_data["GDP per capita"], 
          label="GDP")
 plt.plot(gdp_data["Years"], gdp_data["forecast"], 
          label="forecast")
 
+#plot title
 plt.title("Prediction plot for GDP per capita of USA")
 
+# tick for x axis
 plt.xticks(year_list_forecast)
 
-plt.xlabel("Years")
+# x and y axis label
+plt.xlabel("Year")
 plt.ylabel("GDP per capita")
-plt.legend()
-plt.show()
 
+# Plot legend
+plt.legend(loc="upper left")
+
+# Upper and lower limit
 lower, upper = err.err_ranges(gdp_data["Years"].astype(int), 
                               logistics, param, sigmas)
 
+# Generate plot figure
 plt.figure()
+
+# Plot title
 plt.title("Prediction & error range for GDP per capita of USA")
 
+# Plot data
 plt.plot(gdp_data["Years"], gdp_data["GDP per capita"], label="GDP per capita")
 plt.plot(forecast, label="fit")
 
 # plot error ranges with transparency
 plt.fill_between(gdp_data["Years"], lower, upper, alpha=0.7, color='green')
 
+# tick for x axis
 plt.xticks(year_list_forecast)
 
+# x and y axis label
 plt.xlabel("Year")
 plt.ylabel("GDP per capita")
 
+# Plot legend
 plt.legend(loc="upper left")
+
+#Display plot
 plt.show()
 
 print("Population in")
-print("2030:", logistics(2030, *param) / 1000, "Mill.")
-print("2040:", logistics(2040, *param) / 1000, "Mill.")
-print("2050:", logistics(2050, *param) / 1000, "Mill.")
-print(gdp_data)
-
 print("Fit parameter", param)
