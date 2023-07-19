@@ -64,7 +64,7 @@ The aim of this project topic was to analyze the relationship between urban popu
 * Overall, our study demonstrates the power of data analysis and modeling for gaining insights into global challenges and developing evidence-based solutions.
 
 # Credits
-# Please, if you're going to use any part of this write up or project ensure you give credit to Adedoyin Idris
+# Please, if you are going to use any part of this write-up or project, make sure you give credit to Adedoyin Idris
 
 Thanks.
 Kind Regards.
